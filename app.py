@@ -23,18 +23,21 @@ with st.expander("➕ Neuen Patienten hinzufügen", expanded=True):
         entlassung = st.date_input("Entlassdatum (geplant)", format="YYYY-MM-DD")
 
     if st.button("💾 Patient speichern"):
-        neuer_patient = {
-            "Name": name,
-            "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
-            "Diagnose": diagnose,
-            "Station": station,
-            "Bildgebung": bildgebung,
-            "VAC geplant": "✅" if vac_geplant else "❌",
-            "OP-Termin": op_termin.strftime("%d.%m.%Y"),
-            "Entlassdatum": entlassung.strftime("%d.%m.%Y")
-        }
-        st.session_state.patienten.append(neuer_patient)
-        st.success(f"Patient '{name}' wurde hinzugefügt.")
+        if name.strip() and diagnose.strip():
+            neuer_patient = {
+                "Name": name,
+                "Geburtsdatum": geburtsdatum.strftime("%d.%m.%Y"),
+                "Diagnose": diagnose,
+                "Station": station,
+                "Bildgebung": bildgebung,
+                "VAC geplant": "✅" if vac_geplant else "❌",
+                "OP-Termin": op_termin.strftime("%d.%m.%Y"),
+                "Entlassdatum": entlassung.strftime("%d.%m.%Y")
+            }
+            st.session_state.patienten.append(neuer_patient)
+            st.success(f"Patient '{name}' wurde hinzugefügt.")
+        else:
+            st.error("Bitte Name und Diagnose angeben.")
 
 # Anzeige der aktuellen Patientenliste
 if st.session_state.patienten:
